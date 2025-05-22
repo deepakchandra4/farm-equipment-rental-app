@@ -11,7 +11,7 @@ const options = {
 const connectDB = async () => {
   try {
     const mongoUrl = process.env.MONGO_URL;  // read MONGO_URL from .env
-    console.log(mongoUrl);
+    // console.log(mongoUrl);
     if (!mongoUrl) {
       throw new Error('MONGO_URL is not defined in .env file');
     }

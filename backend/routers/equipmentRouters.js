@@ -22,9 +22,20 @@ const verifyToken = async (req, res, next) => {
 };
 
 // Get all equipment
-router.get('/', async (req, res) => {
+router.get('/listequipment', async (req, res) => {
     try {
         const equipment = await Equipment.find();
+        res.json(equipment);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// Get user's equipment listings
+router.get('/mylistings', verifyToken, async (req, res) => {
+    try {
+        const equipment = await Equipment.find({ owner: req.userId });
         res.json(equipment);
     } catch (err) {
         console.error(err.message);
@@ -47,7 +58,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // Add equipment
-router.post('/', verifyToken, async (req, res) => {
+router.post('/addequipment', verifyToken, async (req, res) => {
     try {
         const newEquipment = new Equipment({
             ...req.body,

@@ -2,9 +2,15 @@
 
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+// import { useRouter } from 'next/navigation';
+// import api from '@/services/api';
+// import { useAuth } from '@/context/AuthContext';
+
 
 const HomePage = () => {
+  // const router = useRouter();
+  // const auth = useAuth();
+
   return (
     <div className="bg-white">
       {/* Hero Section */}

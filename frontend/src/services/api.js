@@ -34,4 +34,5 @@ export const equipment = {
     delete: (id) => api.delete(`/equipment/${id}`),
 };
 
-export default api; 
+// Export the api instance
+export { api }; 

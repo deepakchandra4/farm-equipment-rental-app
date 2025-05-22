@@ -8,13 +8,13 @@ const equipmentSchema = new mongoose.Schema({
     category: {
         type: String,
         required: true,
-        enum: ['Tractor', 'Harvester', 'Planter', 'Irrigation Equipment', 'Other']
+        enum: ['tractors', 'harvesters', 'planters', 'irrigation', 'other']
     },
     description: {
         type: String,
         required: true
     },
-    dailyRate: {
+    price: {
         type: Number,
         required: true,
         min: 0
@@ -23,17 +23,14 @@ const equipmentSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    images: [{
-        type: String
-    }],
+    image: {
+        type: String,
+        required: true
+    },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
-    },
-    specifications: {
-        type: Map,
-        of: String
     },
     isAvailable: {
         type: Boolean,

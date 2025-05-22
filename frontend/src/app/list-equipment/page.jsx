@@ -1,8 +1,11 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { equipment } from '@/services/api';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import { useAuth } from '@/context/AuthContext';
 
 const ListEquipmentPage = () => {
   const [equipmentList, setEquipmentList] = useState([]);
@@ -14,12 +17,10 @@ const ListEquipmentPage = () => {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const router = useRouter();
+  const { isAuthenticated } = useAuth();
 
-  useEffect(() => {
-    fetchEquipment();
-  }, [filters]);
-
-  const fetchEquipment = async () => {
+  const fetchEquipment = useCallback(async () => {
     try {
       setLoading(true);
       const response = await equipment.getAll(filters);
@@ -31,7 +32,15 @@ const ListEquipmentPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [filters]);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.push('/login');
+      return;
+    }
+    fetchEquipment();
+  }, [isAuthenticated, router, fetchEquipment]);
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
@@ -123,10 +132,12 @@ const ListEquipmentPage = () => {
           {equipmentList.map((item) => (
             <div key={item._id} className="bg-white rounded-lg shadow-lg overflow-hidden">
               <div className="relative h-48">
-                <img
-                  src={item.images[0] || 'https://via.placeholder.com/400x300?text=No+Image'}
+                <Image
+                  src={item.image}
                   alt={item.name}
-                  className="w-full h-full object-cover"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
                 <div className="absolute top-4 right-4 bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium">
                   ${item.dailyRate}/day

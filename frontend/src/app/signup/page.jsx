@@ -39,7 +39,7 @@ const SignupPage = () => {
 
   const onSubmit = async (values) => {
     try {
-      await axios.post('http://localhost:5000/user/add', values);
+      await axios.post('http://localhost:5000/api/users/register', values);
       toast.success('User added successfully');
       router.push('/login');
     } catch (err) {
